@@ -1,0 +1,55 @@
+name = "aiocatalogs"
+main = "./packages/platforms/cloudflare/index.ts"
+
+compatibility_date = "2024-09-23"
+
+compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
+
+# Observability
+[observability]
+enabled = true
+head_sampling_rate = 1 
+
+# ------------------------------
+# --- Production environment ---
+# ------------------------------
+
+# Production environment variables
+[vars]
+AIOCATALOGS_API_RATE_LIMIT = true
+AIOCATALOGS_API_MAX_REQUESTS = 50 # requests per minute
+LOG_LEVEL = "info" # debug, info, warn, error, or none
+LOG_ENABLE_TIMESTAMPS = true
+LOG_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:ss"
+LOG_TIMEZONE = "Europe/Berlin"
+
+# D1-Database for the production environment
+[[d1_databases]]
+binding = "DB"
+database_name = "aiocatalogs-d1"
+database_id = "e987f518-0d32-4dbd-a502-7fa64d81972b"
+migrations_dir = "./packages/platforms/cloudflare/migrations"
+
+# -------------------------------
+# --- Development environment ---
+# -------------------------------
+
+# Development environment variables
+[env.dev.vars]
+AIOCATALOGS_API_RATE_LIMIT = false
+AIOCATALOGS_API_MAX_REQUESTS = 5 # requests per minute
+LOG_LEVEL = "debug" # debug, info, warn, error, or none
+LOG_ENABLE_TIMESTAMPS = true
+LOG_TIMESTAMP_FORMAT = "dd.MM.yyyy HH:mm:ss"
+LOG_TIMEZONE = "Europe/Berlin"
+
+# D1-Database for the development environment
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "aiocatalogs"
+database_id = "55f455b6-3bac-4b05-8292-6de60c26eb9d"
+migrations_dir = "./packages/platforms/cloudflare/migrations" 
+
+# Development port
+[dev]
+port = 8787
